@@ -4,7 +4,7 @@ from openai import OpenAI
 import os
 from dotenv import load_dotenv 
 
-# Load environment variables
+# Load environment variables 
 load_dotenv()
  
 app = Flask(__name__, static_folder='.', static_url_path='')
@@ -21,9 +21,21 @@ Session(app)
 client = OpenAI(api_key=os.getenv('OPENAI_API_KEY', ''))
 
 @app.route('/')
+def title():
+    return send_file('title.html')
+
+@app.route('/index.html')
 def index():
     session.clear()
     return send_file('index.html')
+
+@app.route('/title.css')
+def serve_title_css():
+    return send_file('title.css')
+
+@app.route('/title.js')
+def serve_title_js():
+    return send_file('title.js')
 
 @app.route('/styles.css')
 def serve_css():
