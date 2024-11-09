@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InfoTrader - Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo-container">
+            <div class="logo-circle">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 3v18h18"></path>
+                    <path d="m19 9-5 5-4-4-3 3"></path>
+                </svg>
+            </div>
+            <span class="logo-text">Welcome back yo mama</span>
+        </div>
+        <nav class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="#settings">Settings</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <!-- Profile Section -->
+        <div class="profile-banner">
+            <div class="profile-info">
+                <div class="profile-avatar"></div>
+                <div class="profile-details">
+                    <h1>John Doe</h1>
+                    <span class="badge">Level 1</span>
+                    <p class="profile-bio">Experienced trader with a passion for the markets</p>
+                </div>
+            </div>
+            <button class="edit-profile-btn">Edit Profile</button>
+        </div>
+
+        <!-- Bookmarked Trades -->
+        <section class="trades-section">
+            <h2>Bookmarked Trades</h2>
+            <div class="bookmarked-trades">
+                <div class="trade-item">
+                    <div class="trade-icon"></div>
+                    <span>Trade A</span>
+                </div>
+                <div class="trade-item">
+                    <div class="trade-icon"></div>
+                    <span>Trade B</span>
+                </div>
+                <div class="trade-item">
+                    <div class="trade-icon"></div>
+                    <span>Trade C</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recommended Trades -->
+        <section class="trades-section">
+            <h2>Recommended Trades for Today</h2>
+            <p class="section-subtitle">Check out the trades selected for you today</p>
+            <div class="recommended-trades">
+                <div class="trade-card">
+                    <div class="trade-image">
+                        <span class="recommended-badge">Recommended</span>
+                    </div>
+                    <h3>Trade 1</h3>
+                    <a href="#" class="trade-details-link">Trade Details</a>
+                </div>
+                <div class="trade-card">
+                    <div class="trade-image">
+                        <span class="recommended-badge">Recommended</span>
+                    </div>
+                    <h3>Trade 2</h3>
+                    <a href="#" class="trade-details-link">Trade Details</a>
+                </div>
+                <div class="trade-card">
+                    <div class="trade-image">
+                        <span class="recommended-badge">Recommended</span>
+                    </div>
+                    <h3>Trade 3</h3>
+                    <a href="#" class="trade-details-link">Trade Details</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Trading Strategy -->
+        <section class="trades-section">
+            <h2>Choose a Trading Strategy</h2>
+            <p class="section-subtitle">Select a strategy to learn more and execute</p>
+            <div class="strategy-selector">
+                <div class="strategy-buttons">
+                    <button class="strategy-btn">Strategy A</button>
+                    <button class="strategy-btn">Strategy B</button>
+                    <button class="strategy-btn">Strategy C</button>
+                    <button class="strategy-btn">Trade 1</button>
+                    <button class="strategy-btn">Trade 2</button>
+                    <button class="strategy-btn">Trade 3</button>
+                    <button class="strategy-btn">RANDOM TRADE</button>
+                </div>
+                <button class="learn-more-btn">Learn More</button>
+            </div>
+        </section>
+    </main>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>
