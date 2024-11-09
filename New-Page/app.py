@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 load_dotenv()
  
 app = Flask(__name__, static_folder='.', static_url_path='')
-
+ 
 # Configure Flask app
 app.config.update(
     SECRET_KEY=os.getenv('SECRET_KEY', 'your_secret_key_here'),
