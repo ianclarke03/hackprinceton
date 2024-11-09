@@ -126,6 +126,8 @@ input[type="number"]:focus {
 .radio-group {
     display: flex;
     gap: 1.5rem;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
 .radio-label {
@@ -133,6 +135,27 @@ input[type="number"]:focus {
     align-items: center;
     gap: 0.5rem;
     cursor: pointer;
+    min-height: 32px;
+}
+
+.custom-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.custom-title-input {
+    width: 150px;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid var(--gray-200);
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+}
+
+.custom-title-input:focus {
+    outline: none;
+    border-color: var(--light-blue);
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
 }
 
 .btn {
@@ -248,5 +271,32 @@ input[type="number"]:focus {
     .preview-header {
         flex-direction: column;
         text-align: center;
+    }
+
+    .radio-group {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
     }
 }

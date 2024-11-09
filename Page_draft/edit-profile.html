@@ -20,7 +20,7 @@
         </div>
         <nav class="nav-links">
             <a href="index.html">Home</a>
-            <a href="#settings">Settings</a>
+            <a href="general.html">Dashboard</a>
         </nav>
     </header>
 
@@ -49,9 +49,9 @@
                                     <input type="radio" name="title" value="Student">
                                     Student
                                 </label>
-                                <label class="radio-label">
-                                    <input type="radio" name="title" value="Other">
-                                    Other
+                                <label class="radio-label custom-title">
+                                    <input type="radio" name="title" value="custom">
+                                    <input type="text" id="customTitle" placeholder="Custom title" class="custom-title-input">
                                 </label>
                             </div>
                         </div>
@@ -126,7 +126,7 @@
                                     <circle cx="12" cy="13" r="4"/>
                                 </svg>
                                 <span>Upload Photo</span>
-                            </div> 
+                            </div>
                         </label>
                         <input type="file" id="profileImage" accept="image/*" class="hidden">
                     </div>
