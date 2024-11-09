@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, session, jsonify, send_file
 from flask_session import Session
 from openai import OpenAI
 import os
-from dotenv import load_dotenv
+from dotenv import load_dotenv 
 
 # Load environment variables
 load_dotenv()
