@@ -175,18 +175,28 @@ def submit_form():
         # Generate educational video recommendations
         video_recommendations = {}
         for sector in data['sectors']:
+            unique_videos = set()  # Track unique videos across all keywords for this sector
             educational_keywords = [
                 f"{sector} investment fundamentals",
                 f"{sector} market analysis",
                 f"How to invest in {sector}"
             ]
             
-            videos = []
+            # Try each keyword until we get 3 unique videos or run out of keywords
             for keyword in educational_keywords:
-                fetched_videos = fetch_youtube_videos(keyword, max_results=1)
-                videos.extend(fetched_videos)
+                if len(unique_videos) >= 3:
+                    break
+                    
+                fetched_videos = fetch_youtube_videos(
+                    keyword, 
+                    max_results=3 - len(unique_videos)  # Only fetch what we still need
+                )
+                
+                # Add new unique videos
+                unique_videos.update(fetched_videos)
             
-            video_recommendations[sector] = videos[:3]
+            video_recommendations[sector] = list(unique_videos)
+            logger.info(f"Found {len(unique_videos)} unique videos for sector {sector}")
 
         return jsonify(
             status='success',
