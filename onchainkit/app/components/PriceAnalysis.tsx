@@ -20,24 +20,47 @@ export default function PriceAnalysis() {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedTimeframe, setSelectedTimeframe] = useState<'24h' | '7d' | '30d'>('24h');
 
-  // Mock data - replace with real API calls
   const mockTokens: TokenPrice[] = [
     {
       symbol: 'ETH',
-      currentPrice: 3500,
-      averagePrice: 3200,
-      priceChange24h: 5.2,
+      currentPrice: 3184.00,
+      averagePrice: 2720.00,
+      priceChange24h: +17.06, // (3184 - 2720) / 2720 * 100
       lastUpdate: new Date().toISOString(),
-      buySignal: 'BUY'
+      buySignal: 'STRONG_BUY' // Significant increase over 15%
     },
     {
       symbol: 'USDC',
-      currentPrice: 1,
-      averagePrice: 1,
-      priceChange24h: 0,
+      currentPrice: 1.00,
+      averagePrice: 1.00,
+      priceChange24h: 0, // (1 - 1) / 1 * 100
       lastUpdate: new Date().toISOString(),
-      buySignal: 'NEUTRAL'
+      buySignal: 'NEUTRAL' // Stable stablecoin
     },
+    {
+      symbol: 'BTC',
+      currentPrice: 79228.00,
+      averagePrice: 76550.00,
+      priceChange24h: +3.50, // (79228 - 76550) / 76550 * 100
+      lastUpdate: new Date().toISOString(),
+      buySignal: 'BUY' // Moderate positive increase
+    },
+    {
+      symbol: 'SOL',
+      currentPrice: 206.00,
+      averagePrice: 209.00,
+      priceChange24h: -1.44, // (206 - 209) / 209 * 100
+      lastUpdate: new Date().toISOString(),
+      buySignal: 'SELL' // Price decrease
+    },
+    {
+      symbol: 'LINK',
+      currentPrice: 13.50,
+      averagePrice: 16.80,
+      priceChange24h: -19.64, // (13.50 - 16.80) / 16.80 * 100
+      lastUpdate: new Date().toISOString(),
+      buySignal: 'STRONG_SELL' // Significant decrease over 15%
+    }
     // Add more tokens as needed
   ];
 
@@ -90,10 +113,10 @@ export default function PriceAnalysis() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto p-4">
+    <div className="max-w-6xl mx-auto p-4 bg-gray-100">
       {/* Header with Navigation */}
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Price Analysis</h1>
+        <h1 className="text-2xl font-bold text-gray-900">Price Analysis</h1>
         <button 
           onClick={(e) => {
             e.preventDefault();
@@ -150,23 +173,23 @@ export default function PriceAnalysis() {
               </th>
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
+          <tbody className="divide-y divide-gray-200">
             {isLoading ? (
               <tr>
-                <td colSpan={5} className="px-6 py-4 text-center">
+                <td colSpan={5} className="px-6 py-4 text-center text-gray-500">
                   Loading price data...
                 </td>
               </tr>
             ) : (
               tokens.map((token) => (
-                <tr key={token.symbol}>
+                <tr key={token.symbol} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="font-medium">{token.symbol}</div>
+                    <div className="font-medium text-gray-900">{token.symbol}</div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  <td className="px-6 py-4 whitespace-nowrap text-gray-900">
                     ${token.currentPrice.toFixed(2)}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  <td className="px-6 py-4 whitespace-nowrap text-gray-900">
                     ${token.averagePrice.toFixed(2)}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
