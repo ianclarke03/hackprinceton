@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to Investabot</title>
+    <title>Welcome to Investamor</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/title.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -12,7 +12,10 @@
     <div class="transition-overlay"></div>
     <div class="container">
         <h1 class="title"></h1>
-        <button class="start-button">Let's Get Started</button>
+        <div class="button-container">
+            <button class="start-button">Let's Get Started</button>
+            <button class="start-button alternate">Coinbase Wallet for pros</button>
+        </div>
     </div>
     <script src="{{ url_for('static', filename='js/title.js') }}"></script>
 </body>

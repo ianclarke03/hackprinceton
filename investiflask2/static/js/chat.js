@@ -1,3 +1,7 @@
+// Add this at the beginning of your chat.js file
+document.getElementById('homeButton').addEventListener('click', function() {
+    window.location.href = '/';
+});
 // Initialize chat history if not present in sessionStorage
 if (!sessionStorage.getItem('chatHistory')) {
     sessionStorage.setItem('chatHistory', JSON.stringify([]));

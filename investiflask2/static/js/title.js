@@ -1,7 +1,7 @@
-// Update the click handler in title.js
 document.addEventListener('DOMContentLoaded', function() {
     const title = document.querySelector('.title');
-    const startButton = document.querySelector('.start-button');
+    const mainButton = document.querySelector('.start-button');
+    const alternateButton = document.querySelector('.start-button.alternate');
     const overlay = document.querySelector('.transition-overlay');
     const floatingLogos = document.getElementById('floating-logos');
     
@@ -46,21 +46,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
     scheduleNextLogo();
 
-    // Handle button click and transition
-    startButton.addEventListener('click', () => {
+    // Handle main button click and transition
+    mainButton.addEventListener('click', () => {
         sessionStorage.setItem('pageTransition', 'active');
         
-        // First slide in the blue overlay
         overlay.style.animation = 'slideOverlay 1s ease forwards';
         
-        // After overlay is in place, fade it to black
         setTimeout(() => {
             overlay.style.backgroundColor = 'var(--coinbase-dark)';
             
-            // Change page after the color transition
             setTimeout(() => {
                 window.location.href = '/main';
             }, 500);
         }, 1000);
+    });
+
+    // Handle alternate button click
+    alternateButton.addEventListener('click', () => {
+        window.location.href = 'http://localhost:3000';
     });
 });

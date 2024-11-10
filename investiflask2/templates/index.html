@@ -11,9 +11,34 @@
         .left-column, .user-form, .chatbot {
             overflow-x: hidden;
         }
+        
+        /* Style for the home button */
+        .home-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .home-button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
+    <!-- Add the home button -->
+    <button class="home-button" id="homeButton">Return to Title</button>
+
     <div class="blue-overlay" id="blueOverlay"></div>
     <div class="content-wrapper">
         <div class="container">
@@ -23,7 +48,6 @@
                 <div class="user-form">
                     <h2>User Information</h2>
                     <form id="user-form" method="POST">
-                        
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="tenure">Tenure (years):</label>
