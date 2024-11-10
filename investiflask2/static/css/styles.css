@@ -31,8 +31,8 @@ body {
 /* Left Column Styles */
 .left-column {
     height: calc(100vh - 48px);
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
     gap: 24px;
     padding-right: 12px;
     border-right: 1px solid var(--border-color);
@@ -56,18 +56,19 @@ body {
     opacity: 0.5;
 }
 
-/* User Form Styles */
-.user-form {
+/* User Form and Chatbot Styles */
+.user-form, .chatbot {
     background: var(--card-bg);
     border-radius: 16px;
     padding: 24px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
     border: 1px solid var(--border-color);
     backdrop-filter: blur(12px);
-    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
 }
 
-.user-form h2 {
+.user-form h2, .chatbot h2 {
     color: var(--coinbase-light);
     font-size: 1.5rem;
     margin: 0 0 24px 0;
@@ -75,33 +76,27 @@ body {
     border-bottom: 1px solid var(--border-color);
 }
 
+.user-form form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    flex: 1;
+    overflow-y: auto;
+}
+
 .form-row {
     display: flex;
-    gap: 24px;  /* Increased gap for better spacing */
-    margin-bottom: 20px;
+    gap: 24px;
 }
 
 .form-row .form-group {
-    flex: 1;  /* Makes each group take equal space */
-    max-width: calc(50% - 12px);  /* Ensures they stay at half width minus the gap */
+    flex: 1;
 }
 
-/* Ensure all inputs and selects fill their containers */
 .form-group input,
 .form-group select {
     width: 100%;
     box-sizing: border-box;
-}
-
-/* Updated width for name field */
-.form-group-full input[type="text"] {
-    width: 48%;
-}
-
-/* Dynamic font size for chatbot messages */
-#chat-window,
-#chat-input {
-    font-size: 16px; /* Default font size for chat content */
 }
 
 label {
@@ -123,7 +118,6 @@ input, select {
     transition: all 0.2s ease;
 }
 
-
 input:focus, select:focus {
     border-color: var(--coinbase-blue);
     outline: none;
@@ -132,7 +126,7 @@ input:focus, select:focus {
 
 /* Sectors Grid */
 .sectors-container {
-    margin-top: 24px;
+    margin-top: 16px;
 }
 
 #sectors {
@@ -161,65 +155,27 @@ input:focus, select:focus {
 }
 
 /* Chatbot Styles */
-.chatbot {
+.chatbot #chat-window {
     flex: 1;
-    min-height: 0;
-    background: var(--card-bg);
-    border-radius: 16px;
-    padding: 24px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-    border: 1px solid var(--border-color);
-    backdrop-filter: blur(12px);
-}
-
-.chatbot h2 {
-    color: var(--coinbase-light);
-    font-size: 1.5rem;
-    margin: 0;
-    padding-bottom: 12px;
-    border-bottom: 1px solid var(--border-color);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.chatbot h2::before {
-    content: '';
-    width: 8px;
-    height: 8px;
-    background: var(--coinbase-blue);
-    border-radius: 50%;
-    animation: pulse 2s infinite;
-}
-
-#chat-window {
-    flex: 1;
-    min-height: 0;
     overflow-y: auto;
     padding: 16px;
     background: var(--coinbase-dark);
     border-radius: 12px;
     border: 1px solid var(--border-color);
-    margin: 8px 0;
+    margin-bottom: 16px;
 }
 
 #chat-form {
     display: flex;
     gap: 12px;
-    padding: 12px;
-    background: var(--coinbase-dark);
-    border-radius: 12px;
-    border: 1px solid var(--border-color);
 }
 
 #chat-input {
     flex-grow: 1;
     padding: 12px 16px;
-    background: transparent;
-    border: none;
+    background: var(--coinbase-dark);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
     color: var(--coinbase-light);
     font-size: 14px;
 }
@@ -276,7 +232,8 @@ button:active {
 }
 
 .submit-button-container {
-    margin-top: 24px;
+    margin-top: auto;
+    padding-top: 24px;
     text-align: center;
 }
 
@@ -360,23 +317,24 @@ input[type="checkbox"]:checked + label::before {
         height: auto;
         overflow: visible;
     }
-
+    
     .left-column {
+        grid-template-rows: auto;
+        grid-template-columns: 1fr;
         height: auto;
+        overflow: visible;
         border-right: none;
         padding-right: 0;
-        overflow: visible;
     }
-
+    
     .left-column::before {
         display: none;
     }
-
-    .chatbot {
-        height: 500px;
+    
+    .user-form, .chatbot {
+        height: auto;
     }
 }
-
 
 #loading-indicator p {
     color: var(--coinbase-light);
@@ -395,7 +353,6 @@ input[type="checkbox"]:checked + label::before {
 }
 
 /* Collapsible Sections */
-
 .collapsible-header {
     padding: 16px 24px;
     background: var(--coinbase-gray);
@@ -404,86 +361,80 @@ input[type="checkbox"]:checked + label::before {
     justify-content: space-between;
     align-items: center;
     transition: all 0.3s ease;
-}
-
-.collapsible-header:hover {
+    }
+    
+    .collapsible-header:hover {
     background: var(--coinbase-blue);
-}
-
-.collapsible-header span {
+    }
+    
+    .collapsible-header span {
     color: var(--coinbase-light);
     font-weight: 600;
     font-size: 1.1rem;
-}
-
-.toggle-icon {
+    }
+    
+    .toggle-icon {
     color: var(--coinbase-light);
     font-size: 0.8rem;
     transition: transform 0.3s ease;
-}
-
-.collapsible.active .toggle-icon {
+    }
+    
+    .collapsible.active .toggle-icon {
     transform: rotate(180deg);
-}
-
-.collapsible {
-    margin-bottom: 24px;  /* Increased gap between collapsible sections */
-    border: 1px solid var(--coinbase-blue);  /* Added border */
-}
-
-.collapsible-content {
+    }
+    
+    .collapsible-content {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.3s ease, padding 0.3s ease;
-    padding: 0 24px;  /* Set initial padding to 0 */
-}
-
-.collapsible.active .collapsible-content {
-    max-height: 2000px; /* Large enough to fit content when opened */
-    padding: 24px;  /* Add padding when expanded */
-}
-
-/* Info Blocks */
-.info-section {
+    transition: max-height 0.3s ease;
+    }
+    
+    .collapsible.active .collapsible-content {
+    max-height: 2000px;
+    padding: 24px;
+    }
+    
+    /* Info Blocks */
+    .info-section {
     display: flex;
     flex-direction: column;
     gap: 24px;
-}
-
-.info-block h3 {
+    }
+    
+    .info-block h3 {
     color: var(--coinbase-blue);
     margin: 0 0 12px 0;
     font-size: 1.1rem;
-}
-
-.info-block p {
+    }
+    
+    .info-block p {
     margin: 0;
     color: var(--coinbase-text);
     line-height: 1.6;
-}
-
-.info-block ul {
+    }
+    
+    .info-block ul {
     margin: 0;
     padding-left: 20px;
     color: var(--coinbase-text);
-}
-
-.info-block li {
+    }
+    
+    .info-block li {
     margin-bottom: 8px;
-}
-
-/* Video Section */
-.video-section {
+    }
+    
+    /* Video Section */
+    .video-section {
     margin-top: 24px;
-}
-
-.video-grid {
+    }
+    
+    .video-grid {
     display: grid;
     gap: 16px;
     margin-top: 16px;
-}
-
-.video-container {
+    }
+    
+    .video-container {
     position: relative;
     width: 100%;
     padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
@@ -491,66 +442,76 @@ input[type="checkbox"]:checked + label::before {
     overflow: hidden;
     border-radius: 8px;
     border: 1px solid var(--border-color);
-}
-
-.video-container iframe {
+    }
+    
+    .video-container iframe {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-}
-
-/* Section Headers */
-.results-section h2 {
+    }
+    
+    /* Section Headers */
+    .results-section h2 {
     color: var(--coinbase-light);
     font-size: 1.5rem;
     margin: 0 0 24px 0;
     padding-bottom: 12px;
     border-bottom: 1px solid var(--border-color);
-}
-
-/* Animations */
-@keyframes fadeIn {
+    }
+    
+    /* Animations */
+    @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
-}
-
-.fadeIn {
+    }
+    
+    .fadeIn {
     animation: fadeIn 0.3s ease forwards;
-}
-
-/* Loading Indicator Improvements */
-#loading-indicator {
+    }
+    
+    /* Loading Indicator Improvements */
+    #loading-indicator {
     position: fixed;
     top: 50%;
-    left: 55%;  /* Moved slightly to the right */
+    left: 55%;
     transform: translate(-50%, -50%);
     background: var(--card-bg);
     padding: 32px 48px;
     border-radius: 16px;
-    border: 2px solid var(--coinbase-blue);  /* Added border */
+    border: 2px solid var(--coinbase-blue);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(12px);
     z-index: 1000;
     text-align: center;
-}
-
-#loading-indicator img {
-    width: 72px;  /* Made 20% wider from original 60px */
-    height: 72px;  /* Kept aspect ratio */
+    }
+    
+    #loading-indicator img {
+    width: 72px;
+    height: 72px;
     margin-bottom: 16px;
-}
-
-/* Information Section Improvements */
-.info-block {
+    }
+    
+    /* Information Section Improvements */
+    .info-block {
     padding: 20px;
     background: var(--coinbase-dark);
     border-radius: 8px;
-    border: 1px solid var(--coinbase-blue);  /* Added border */
-    margin-bottom: 16px;  /* Added gap between blocks */
-}
-
-.info-block:last-child {
+    border: 1px solid var(--coinbase-blue);
+    margin-bottom: 16px;
+    }
+    
+    .info-block:last-child {
     margin-bottom: 0;
-}
+    }
+    
+    .collapsible {
+    margin-bottom: 24px;
+    border: 1px solid var(--coinbase-blue);
+    }
+    
+    .collapsible-content {
+    padding: 24px;
+    border-top: 1px solid var(--border-color);
+    }
