@@ -2,10 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Investment Assistant</title>
+    <title>{% block title %}Investment Assistant{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    {% block extra_head %}{% endblock %}
 </head>
 <body>
     {% block content %}{% endblock %}
+
+    {% block scripts %}{% endblock %}
 </body>
 </html>

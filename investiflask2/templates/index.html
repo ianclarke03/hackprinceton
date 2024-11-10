@@ -1,382 +1,131 @@
-{% extends 'base.html' %}
-
-{% block content %}
-<div class="container">
-    <!-- Left Side: Chatbot -->
-    <div class="chatbot">
-        <h2>Investment Chatbot</h2>
-        <div id="chat-window">
-            <!-- Chat messages will appear here -->
-        </div>
-        <form id="chat-form" method="post">
-            <input type="text" id="chat-input" name="message" placeholder="Type your message..." autocomplete="off">
-            <button type="submit">Send</button>
-        </form>
-    </div>
-
-    <!-- Right Side: User Input Form and Results -->
-    <div class="user-section">
-        <div class="user-form">
-            <h2>User Information</h2>
-            <form id="user-form" method="POST">
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name" required>
-
-                <label for="experience">Experience Level:</label>
-                <select id="experience" name="experience" required>
-                    <option value="Beginner">Beginner</option>
-                    <option value="Intermediate">Intermediate</option>
-                    <option value="Expert">Expert</option>
-                </select>
-
-                <label for="risk_level">Risk Level:</label>
-                <select id="risk_level" name="risk_level" required>
-                    <option value="Low">Low</option>
-                    <option value="Medium">Medium</option>
-                    <option value="High">High</option>
-                </select>
-
-                <label for="tenure">Investment Tenure (years):</label>
-                <input type="number" id="tenure" name="tenure" min="1" required>
-
-                <label for="capital">Capital ($):</label>
-                <input type="number" id="capital" name="capital" min="0" required>
-
-                <!-- Removed Number of Investment Recommendations -->
-                <!--
-                <label for="num_recommendations">Number of Investment Recommendations (1-3):</label>
-                <input type="number" id="num_recommendations" name="num_recommendations" min="1" max="3" required>
-                -->
-
-                <label for="sectors">Select Sectors of Interest (Max 3):</label>
-                <div id="sectors">
-                    <label><input type="checkbox" name="sectors" value="Stocks"> Stocks</label>
-                    <label><input type="checkbox" name="sectors" value="Bonds"> Bonds</label>
-                    <label><input type="checkbox" name="sectors" value="Cryptocurrencies"> Cryptocurrencies</label>
-                    <label><input type="checkbox" name="sectors" value="Real Estate"> Real Estate</label>
-                    <label><input type="checkbox" name="sectors" value="Commodities"> Commodities</label>
-                    <label><input type="checkbox" name="sectors" value="ETFs"> ETFs</label>
-                    <!-- Add more sectors as needed -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investimor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Inline styles to hide horizontal scrollbar */
+        .left-column, .user-form, .chatbot {
+            overflow-x: hidden;
+        }
+    </style>
+</head>
+<body>
+    <div class="blue-overlay" id="blueOverlay"></div>
+    <div class="content-wrapper">
+        <div class="container">
+            <!-- Left Column: Fixed Position -->
+            <div class="left-column">
+                <!-- User Information Form -->
+                <div class="user-form">
+                    <h2>User Information</h2>
+                    <form id="user-form" method="POST">
+                        <div class="form-group">
+                            <label for="name">Name:</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="tenure">Tenure (years):</label>
+                                <input type="number" id="tenure" name="tenure" min="1" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="capital">Capital ($):</label>
+                                <input type="number" id="capital" name="capital" min="0" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="experience">Experience:</label>
+                                <select id="experience" name="experience" required>
+                                    <option value="">Select</option>
+                                    <option value="Beginner">Beginner</option>
+                                    <option value="Intermediate">Intermediate</option>
+                                    <option value="Expert">Expert</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="risk_level">Risk Level:</label>
+                                <select id="risk_level" name="risk_level" required>
+                                    <option value="">Select</option>
+                                    <option value="Low">Low</option>
+                                    <option value="Medium">Medium</option>
+                                    <option value="High">High</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group sectors-container">
+                            <label>Select Sectors (Max 3):</label>
+                            <div id="sectors" class="sectors-grid">
+                                <input type="checkbox" id="stocks" name="sectors" value="Stocks">
+                                <label for="stocks">Stocks</label>
+                                
+                                <input type="checkbox" id="bonds" name="sectors" value="Bonds">
+                                <label for="bonds">Bonds</label>
+                                
+                                <input type="checkbox" id="crypto" name="sectors" value="Cryptocurrencies">
+                                <label for="crypto">Cryptocurrencies</label>
+                                
+                                <input type="checkbox" id="realestate" name="sectors" value="Real Estate">
+                                <label for="realestate">Real Estate</label>
+                                
+                                <input type="checkbox" id="commodities" name="sectors" value="Commodities">
+                                <label for="commodities">Commodities</label>
+                                
+                                <input type="checkbox" id="etfs" name="sectors" value="ETFs">
+                                <label for="etfs">ETFs</label>
+                            </div>
+                        </div>
+                        
+                        <div class="submit-button-container">
+                            <button type="submit">Get Information</button>
+                        </div>
+                    </form>
                 </div>
-
-                <button type="submit">Submit</button>
-            </form>
-        </div>
-
-        <!-- Loading Indicator -->
-        <div id="loading-indicator" style="display: none; text-align: center;">
-            <img src="{{ url_for('static', filename='images/spinner.gif') }}" alt="Loading..." />
-            <p>Processing your request...</p>
-        </div>
-
-        <!-- Investment Advice and YouTube Videos -->
-        <div class="results-section" id="results-section" style="display: none;">
-            <h2>Investment Advice</h2>
-            <div id="investment-advice">
-                <!-- Investment advice will be displayed here -->
+                
+                <!-- Chatbot -->
+                <div class="chatbot">
+                    <h2>Investment Chatbot</h2>
+                    <div id="chat-window">
+                        <!-- Chat messages will appear here -->
+                    </div>
+                    <form id="chat-form">
+                        <input type="text" id="chat-input" name="message" placeholder="Ask me anything about investments..." autocomplete="off">
+                        <button type="submit">Send</button>
+                    </form>
+                </div>
             </div>
-
-            <h2>Recommended Videos</h2>
-            <div id="video-recommendations">
-                <!-- YouTube video embeds will be displayed here -->
+            
+            <!-- Right Column: Scrollable Content -->
+            <div class="right-column">
+                <div id="loading-indicator" style="display: none;">
+                    <img src="{{ url_for('static', filename='images/spinner.gif') }}" alt="Loading..." />
+                    <p>Analyzing your investment preferences...</p>
+                </div>
+                
+                <!-- Results Section -->
+                <div class="results-section" id="results-section" style="display: none;">
+                    <h2>Investment Information</h2>
+                    <div id="investment-advice">
+                        <!-- Collapsible investment information will be displayed here -->
+                    </div>
+                    
+                    <h2>Educational Videos</h2>
+                    <div id="video-recommendations">
+                        <!-- Collapsible video sections will be displayed here -->
+                    </div>
+                </div>
             </div>
-
-            <h2>Personalized Portfolio Allocation</h2>
-            <canvas id="portfolio-chart" width="400" height="400"></canvas>
         </div>
     </div>
-</div>
 
-<!-- Add some basic styling for layout and responsiveness -->
-<style>
-    .container {
-        display: flex;
-        justify-content: space-between;
-        padding: 20px;
-        flex-wrap: wrap;
-    }
-    .chatbot, .user-section {
-        width: 48%;
-        padding: 20px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        box-sizing: border-box;
-        margin-bottom: 20px;
-    }
-    #chat-window {
-        height: 300px;
-        overflow-y: auto;
-        margin-bottom: 10px;
-        border: 1px solid #ddd;
-        padding: 10px;
-        background-color: #f9f9f9;
-    }
-    .user-form label {
-        display: block;
-        margin-top: 10px;
-    }
-    .user-form input, .user-form select {
-        width: 100%;
-        padding: 8px;
-        margin-top: 5px;
-        box-sizing: border-box;
-    }
-    .user-form button {
-        margin-top: 15px;
-        padding: 10px 20px;
-    }
-    #sectors label {
-        display: inline-block;
-        margin-right: 10px;
-    }
-    /* Loading Indicator Styling */
-    #loading-indicator img {
-        width: 50px;
-        height: 50px;
-    }
-
-    #loading-indicator p {
-        margin-top: 10px;
-        font-size: 16px;
-        color: #555;
-    }
-
-    .results-section {
-        margin-top: 20px;
-    }
-
-    #investment-advice {
-        margin-bottom: 20px;
-    }
-
-    #video-recommendations iframe {
-        width: 100%;
-        height: 315px;
-        margin-bottom: 20px;
-    }
-
-    /* Responsive Design */
-    @media (max-width: 768px) {
-        .chatbot, .user-section {
-            width: 100%;
-        }
-    }
-</style>
-
-<!-- Include Chart.js from CDN -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<!-- JavaScript to handle form submissions and display -->
-<script>
-    // Utility function to extract YouTube Video ID from URL
-    function getYouTubeID(url) {
-        const regex = /(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=([^&\s]+)/;
-        const match = url.match(regex);
-        return match ? match[1] : null;
-    }
-
-    // Handle initial form submission for investment advice
-    document.getElementById('user-form').onsubmit = async function (event) {
-        event.preventDefault();
-
-        const formData = new FormData(document.getElementById('user-form'));
-        const data = {
-            name: formData.get('name'),
-            experience: formData.get('experience'),
-            risk_level: formData.get('risk_level'),
-            tenure: formData.get('tenure'),
-            capital: formData.get('capital'),
-            sectors: []
-        };
-
-        // Collect selected sectors
-        const sectorCheckboxes = document.querySelectorAll('input[name="sectors"]:checked');
-        sectorCheckboxes.forEach(checkbox => {
-            data.sectors.push(checkbox.value);
-        });
-
-        // Ensure no more than 3 sectors are selected (additional frontend check)
-        if (data.sectors.length > 3) {
-            alert("You can select a maximum of 3 sectors.");
-            return;
-        }
-
-        // Show loading indicator
-        document.getElementById('loading-indicator').style.display = 'block';
-        document.getElementById('results-section').style.display = 'none';
-
-        try {
-            // Send data to /submit_form endpoint
-            const response = await fetch('/submit_form', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            });
-
-            const result = await response.json();
-
-            // Hide loading indicator
-            document.getElementById('loading-indicator').style.display = 'none';
-
-            // Display the initial bot message in the chat window
-            const chatWindow = document.getElementById('chat-window');
-            if (result.status === 'success') {
-                chatWindow.innerHTML += `<div><strong>Bot:</strong> ${result.initial_message.replace(/\n/g, '<br>')}</div>`;
-                chatWindow.scrollTop = chatWindow.scrollHeight;
-
-                // Display investment advice
-                const investmentAdviceDiv = document.getElementById('investment-advice');
-                investmentAdviceDiv.innerHTML = ''; // Clear previous advice
-
-                // Iterate over each recommendation and display
-                result.investment_advice.forEach((advice, index) => {
-                    const adviceSection = document.createElement('div');
-                    adviceSection.innerHTML = `
-                        <h3>Recommendation for <em>${advice.sector}</em>: ${advice.title}</h3>
-                        <p><strong>Expected Returns:</strong> ${advice.expected_returns}</p>
-                        <p><strong>Potential Risks:</strong> ${advice.potential_risks}</p>
-                        <p><strong>Advantages:</strong> ${advice.advantages}</p>
-                        <p><strong>Sample Portfolio:</strong></p>
-                        <ul>
-                            ${advice.sample_portfolio.investments.map(inv => `
-                                <li><strong>${inv.name}</strong> (${inv.type}): $${inv.allocated_amount} allocated. <em>${inv.explanation}</em></li>
-                            `).join('')}
-                        </ul>
-                    `;
-                    investmentAdviceDiv.appendChild(adviceSection);
-                });
-
-                // Display YouTube video recommendations
-                const videoRecommendationsDiv = document.getElementById('video-recommendations');
-                videoRecommendationsDiv.innerHTML = ''; // Clear previous videos
-                for (const [sector, videos] of Object.entries(result.video_recommendations)) {
-                    // Create a header for each sector
-                    const sectorHeader = document.createElement('h3');
-                    sectorHeader.textContent = `Videos for "${sector}"`;
-                    videoRecommendationsDiv.appendChild(sectorHeader);
-
-                    if (videos.length === 0) {
-                        const noVideos = document.createElement('p');
-                        noVideos.textContent = "No videos found for this sector.";
-                        videoRecommendationsDiv.appendChild(noVideos);
-                        continue;
-                    }
-
-                    // Create embedded YouTube iframes
-                    videos.forEach(videoUrl => {
-                        const videoID = getYouTubeID(videoUrl);
-                        if (videoID) {
-                            const iframe = document.createElement('iframe');
-                            iframe.src = `https://www.youtube.com/embed/${videoID}`;
-                            iframe.frameBorder = "0";
-                            iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
-                            iframe.allowFullscreen = true;
-                            videoRecommendationsDiv.appendChild(iframe);
-                        }
-                    });
-                }
-
-                // Display Personalized Portfolio Allocation
-                const portfolioAllocation = result.portfolio_allocation;
-                const portfolioChartCanvas = document.getElementById('portfolio-chart');
-                if (portfolioChartCanvas && portfolioAllocation) {
-                    // Prepare data for the pie chart
-                    const labels = Object.keys(portfolioAllocation);
-                    const dataValues = Object.values(portfolioAllocation);
-
-                    // Destroy existing chart if exists
-                    if (window.portfolioChart) {
-                        window.portfolioChart.destroy();
-                    }
-
-                    // Create the pie chart
-                    window.portfolioChart = new Chart(portfolioChartCanvas, {
-                        type: 'pie',
-                        data: {
-                            labels: labels,
-                            datasets: [{
-                                data: dataValues,
-                                backgroundColor: [
-                                    '#FF6384',
-                                    '#36A2EB',
-                                    '#FFCE56',
-                                    '#4BC0C0',
-                                    '#9966FF',
-                                    '#FF9F40',
-                                    '#FF9F40',
-                                    '#FF6384',
-                                    '#36A2EB',
-                                    '#FFCE56' // Add more colors if needed
-                                ],
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            plugins: {
-                                legend: {
-                                    position: 'top',
-                                },
-                                title: {
-                                    display: true,
-                                    text: 'Personalized Portfolio Allocation'
-                                }
-                            }
-                        },
-                    });
-                }
-
-                // Show the results section
-                document.getElementById('results-section').style.display = 'block';
-            } else {
-                chatWindow.innerHTML += `<div><strong>Error:</strong> ${result.message}</div>`;
-            }
-        } catch (error) {
-            console.error("Error:", error);
-            document.getElementById('loading-indicator').style.display = 'none';
-            document.getElementById('chat-window').innerHTML += `<div><strong>Error:</strong> Failed to submit form.</div>`;
-        }
-    };
-
-    // Handle chat message submission
-    document.getElementById('chat-form').onsubmit = async function (event) {
-        event.preventDefault();
-        const messageInput = document.getElementById('chat-input');
-        const message = messageInput.value.trim();
-        if (!message) return;
-
-        // Append user's message to the chat window
-        const chatWindow = document.getElementById('chat-window');
-        chatWindow.innerHTML += `<div><strong>You:</strong> ${message}</div>`;
-        messageInput.value = '';
-
-        try {
-            // Send message to server
-            const response = await fetch('/chat', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message })
-            });
-            const data = await response.json();
-
-            // Display bot's response in the chat window
-            chatWindow.innerHTML += `<div><strong>Bot:</strong> ${data.message.replace(/\n/g, '<br>')}</div>`;
-            chatWindow.scrollTop = chatWindow.scrollHeight;
-        } catch (error) {
-            console.error("Error:", error);
-            chatWindow.innerHTML += `<div><strong>Error:</strong> Failed to send message.</div>`;
-        }
-    };
-
-    // Limit sector selection to a maximum of 3
-    const sectorCheckboxes = document.querySelectorAll('input[name="sectors"]');
-    sectorCheckboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', function() {
-            const checked = document.querySelectorAll('input[name="sectors"]:checked');
-            if (checked.length > 3) {
-                this.checked = false;
-                alert("You can select a maximum of 3 sectors.");
-            }
-        });
-    });
-</script>
-{% endblock %}
+    <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+</body>
+</html>
