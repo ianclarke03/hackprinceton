@@ -185,7 +185,7 @@ def main():
     print("\n=== Cryptocurrency Price Data ===")
     print(df.to_string(index=False))
 
-    # Optional: Save the DataFrame to a CSV file
+    # Optional: Save the DataFrame to a CSV file.
     # df.to_csv("crypto_price_data.csv", index=False)
 
 # ======================= Execution Entry Point =======================
